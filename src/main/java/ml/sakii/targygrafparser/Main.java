@@ -50,13 +50,11 @@ public class Main{
 
 	public static final String name="Név beáll.",code="Kód beáll.",credits="Kredit beáll.",prereqs="Előfeltétel hozzáad.";
 	
-	//public static HashMap<String,Subject> Subjects = new HashMap<>();
 	public static ArrayList<Subject> Subjects = new ArrayList<>();
 	public static Subject SelectedSubject=new Subject();
 	public static int index=0;
 	static String currentKey="";
     static JLabel currentLabel = new JLabel();
-    //static String filename = "test.csv";
     static JList<String> list;
     static JTextField exportname;
 	static JScrollPane tableScrollPane;
@@ -151,12 +149,10 @@ public class Main{
 	        JLabel pagesLabel = new JLabel("Oldalak:");
 	        importPanel.add(pagesLabel);
 	        final JTextField pagesField = new JTextField(10);
-	        pagesField.setText("14-18");
 	        importPanel.add(pagesField);
 	        JLabel filenameLabel = new JLabel("Fájlnév:");
 	        importPanel.add(filenameLabel);
 	        final JTextField importField = new JTextField(20);
-	        importField.setText("tmp2.csv");
 	        importPanel.add(importField);
 	        JButton importButton = new JButton("Importálás");
 	        importButton.addActionListener(new ActionListener() {
@@ -339,12 +335,7 @@ public class Main{
 	        	
 	        };
 	        
-	        /*JButton addPrereq = new JButton ("Előfeltétel hozzáadás");
-	        addPrereq.setMnemonic(KeyEvent.VK_4);
-	        addPrereq.setActionCommand("add");
-	        addPrereq.addActionListener(prereqListener);
-	        configPanel.add(addPrereq);*/
-	        
+
 	        
 	        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
 	        separator.setMaximumSize( new Dimension(Integer.MAX_VALUE, 1) );
@@ -381,7 +372,6 @@ public class Main{
 	        configPanel.add(saveSubject,Component.LEFT_ALIGNMENT);
 
 	        
-	        //configPanel.setSize(200, configPanel.getHeight());
 	        
 	        
 	        
@@ -548,10 +538,8 @@ public class Main{
 					
 					for(Subject s : subjects) {
 						Subjects.add(s);
-						//if(!((DefaultListModel<String>)( list.getModel())).contains(s.getName())) {
-							((DefaultListModel<String>)( list.getModel())).addElement(s.getName());
-						//}
-						//setSelectedSubject(new Subject());
+						((DefaultListModel<String>)( list.getModel())).addElement(s.getName());
+
 					}
 				}
 			};
@@ -743,7 +731,6 @@ public class Main{
 			        	
 			        	JSONArray courses = new JSONArray();
 
-				        //Object[] subjects = ((DefaultListModel<String>)( list.getModel())).toArray();
 						for(Subject s : obligatorySubjects.get(i)) {
 
 							JSONObject subject = new JSONObject();
