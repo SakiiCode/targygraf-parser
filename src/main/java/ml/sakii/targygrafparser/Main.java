@@ -423,6 +423,16 @@ public class Main{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if(!Subjects.isEmpty()) {
+						int overwrite = JOptionPane.showConfirmDialog(frame, "Felülírod a meglévő tárgyak listáját?");
+						if(overwrite ==JOptionPane.YES_OPTION) {
+							Subjects.clear();
+							((DefaultListModel<String>)( list.getModel())).clear();
+						}else if(overwrite == JOptionPane.CANCEL_OPTION) {
+							return;
+						}
+					}
+					
 					int startCol=1;
 					int startRow=1;
 					ArrayList<Subject> subjects = new ArrayList<>();
