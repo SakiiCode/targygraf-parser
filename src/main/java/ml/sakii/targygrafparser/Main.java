@@ -163,6 +163,12 @@ public class Main{
 						frame.getContentPane().remove(tableScrollPane);
 					}
 					if(importField.getText().endsWith(".pdf")) {
+						
+						if(pagesField.getText().isEmpty()) {
+							JOptionPane.showMessageDialog(frame.getContentPane(), "Nem adtál meg oldalakat!");
+							return;
+						}
+						
 						String filename = importField.getText().substring(0, importField.getText().length()-4)+"_converted.csv";
 						String[] args  =new String[] {importField.getText(),"-p",pagesField.getText(),"-l","-o",filename};
 						
@@ -174,37 +180,22 @@ public class Main{
 					    try {
 					    	technology.tabula.CommandLineApp.main(args);
 					    } catch (SecurityException e1) {
-					        //Do something if the external code used System.exit()
+					    	if(!e1.getMessage().equals("0")) {
+						    	e1.printStackTrace();
+					        	JOptionPane.showMessageDialog(frame.getContentPane(), "PDF konvertálási hiba ("+e1.getMessage()+")");
+					        	System.setSecurityManager(original);
+					        	return;
+					    	}
+
 					    }
 					    System.setSecurityManager(original);
 					
-					    
-					    table = loadTable(filename);
-				        importField.setText(filename);
-				        
-				        if(table==null) {
-				        	JOptionPane.showMessageDialog(frame.getContentPane(), "Hiba");
-				        }else {
-				        
-					        updateRowHeights();
-					        tableScrollPane = new JScrollPane(table);
-					        tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-					        frame.getContentPane().add(tableScrollPane,BorderLayout.CENTER);
-					        frame.revalidate();
-				        }
+					    if(loadCsv(filename)) {
+					    	importField.setText(filename);
+					    }
+			        
 					}else if(importField.getText().endsWith(".csv")) {
-						table = loadTable(importField.getText());
-				        
-				        if(table==null) {
-				        	JOptionPane.showMessageDialog(frame.getContentPane(), "Hiba");
-				        }else {
-					        
-					        updateRowHeights();
-					        tableScrollPane = new JScrollPane(table);
-					        tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-					        frame.getContentPane().add(tableScrollPane,BorderLayout.CENTER);
-					        frame.revalidate();
-				        }
+					    loadCsv(importField.getText());
 					}else {
 			        	JOptionPane.showMessageDialog(frame.getContentPane(), "Nem pdf fájl!");
 			        }
@@ -212,8 +203,22 @@ public class Main{
 					
 				}
 	        	
-	        	
-	        	
+				private boolean loadCsv(String filename) {
+					try {
+				    	table = loadTable(filename);
+				    }catch(Exception e2) {
+				    	JOptionPane.showMessageDialog(frame.getContentPane(), "CSV Betöltési Hiba\r\n"+e2.getMessage());
+				    	return false;
+				    }
+				        
+			        updateRowHeights();
+			        tableScrollPane = new JScrollPane(table);
+			        tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			        frame.getContentPane().add(tableScrollPane,BorderLayout.CENTER);
+			        frame.revalidate();
+			        return true;
+				}
+	        		        	
 	        });
 	        importPanel.add(importButton);
 	        
@@ -468,7 +473,7 @@ public class Main{
 								s.setCredits(Integer.parseInt(creditCell.split("\r\n")[0]));
 							}catch(Exception e1) {
 								e1.printStackTrace();
-								JOptionPane.showMessageDialog(frame.getContentPane(), "Kredit hiba ("+i+":"+(startCol+2)+")");
+								JOptionPane.showMessageDialog(frame.getContentPane(), "Kredit hiba ("+i+":"+(startCol+2)+")\r\n"+e1.getMessage());
 							}
 
 							
@@ -527,7 +532,7 @@ public class Main{
 							currentGroup = getValue(i,0);
 							
 						}else {
-							JOptionPane.showMessageDialog(frame.getContentPane(), "Hibás sor:"+i);
+							JOptionPane.showMessageDialog(frame.getContentPane(), "Üres cella ebben a sorban:"+i);
 						}
 						
 					}
