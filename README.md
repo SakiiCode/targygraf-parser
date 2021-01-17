@@ -4,6 +4,10 @@ Tantárgy szerkesztésnél először jobb oldalon a megfelelő tulajdonságra ke
 <br>
 Az AutoParse PE-MIK-re van optimalizálva de ha általakítanád a saját egyetemedre/szakodra akkor segítek benne<br>
 <br>
-Leírás erről a [Wiki](https://github.com/SakiiCode/targygraf-parser/wiki/Auto-Parse)-ben
-<br>
+Leírás erről a [Wiki](https://github.com/SakiiCode/targygraf-parser/wiki/Auto-Parse)-ben<br>
 
+### Letöltés
+
+[Releases szekció](https://github.com/SakiiCode/targygraf-parser/releases/)<br>
+<br>
+Java 8 kell hozzá
