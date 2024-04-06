@@ -488,27 +488,10 @@ public class Main{
 
 							
 							//név
-							String[] nameArr = getValue(i, startCol-1).split("\r\n");
 							
-							StringBuilder sb = new StringBuilder();
-							for(int j=0;j<nameArr.length/2;j++) {
-								sb.append(nameArr[j]+" ");
-							}
-							
-							if(nameArr[0].equals("Mesterséges")) {
-								System.out.println(Arrays.toString(nameArr));
-							}
-							boolean odd = (nameArr.length % 2) == 1;
-							if(odd) {
-								String middleLine = nameArr[nameArr.length/2];
-								if(Character.isLowerCase(middleLine.charAt(0)) || middleLine.charAt(0) == '(') { //magyar
-									sb.append(middleLine);
-								}
-							}
+							s.setName(getHungarianSubjectName(getValue(i, startCol-1)));
 							
 
-							
-							s.setName(sb.toString().trim());
 							
 							//kód
 							
@@ -851,7 +834,10 @@ public class Main{
 	
 	public static void saveProperty(String key, String value) {
 		switch(key) {
-		case name: SelectedSubject.setName(value);break;
+		case name: SelectedSubject.setName(getHungarianSubjectName(value));
+			DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
+			model.setElementAt(getHungarianSubjectName(value), Subjects.indexOf(SelectedSubject));
+			break;
 		case code: SelectedSubject.setCode(value);break;
 		case credits: SelectedSubject.setCredits(Integer.parseInt(value));break;
 		case prereqs: SelectedSubject.getPrereqs().add(value);
@@ -870,6 +856,21 @@ public class Main{
 		redrawSelectedSubject();
 	}
 	
+	private static String getHungarianSubjectName(String combined) {
+		String[] nameArr = combined.split("\r\n");
+		StringBuilder sb = new StringBuilder();
+		for(int j=0;j<nameArr.length/2;j++) {
+			sb.append(nameArr[j]+" ");
+		}
+		boolean odd = (nameArr.length % 2) == 1;
+		if(odd) {
+			String middleLine = nameArr[nameArr.length/2];
+			if(Character.isLowerCase(middleLine.charAt(0)) || middleLine.charAt(0) == '(') { //magyar
+				sb.append(middleLine);
+			}
+		}
+		return sb.toString().trim();
+	}
 	
 
 	private static void redrawSelectedSubject() {
